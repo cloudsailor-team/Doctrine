@@ -26,6 +26,12 @@ use Tracy;
  */
 class Connection extends Doctrine\DBAL\Connection
 {
+
+	/**
+	 * @var bool
+	 */
+	public static $appWithoutConnection = FALSE;
+
 	/**
 	 * @var bool
 	 */
@@ -304,17 +310,17 @@ class Connection extends Doctrine\DBAL\Connection
 
 
 
-//	/**
-//	 * @return Doctrine\DBAL\Platforms\AbstractPlatform
-//	 */
-//	public function getDatabasePlatform()
-//	{
-//		if (!$this->isConnected()) {
-//			$this->connect();
-//		}
-//
-//		return parent::getDatabasePlatform();
-//	}
+	/**
+	 * @return Doctrine\DBAL\Platforms\AbstractPlatform
+	 */
+	public function getDatabasePlatform()
+	{
+		if (!$this->isConnected() && !self::$appWithoutConnection) {
+			$this->connect();
+		}
+
+		return parent::getDatabasePlatform();
+	}
 
 
 
